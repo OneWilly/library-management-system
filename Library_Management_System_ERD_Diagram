@@ -1,0 +1,87 @@
+erDiagram
+    MEMBERS {
+        int member_id PK
+        string first_name
+        string last_name
+        string email UK
+        string phone_number
+        string address
+        date date_of_birth
+        date membership_date
+        enum membership_status
+    }
+    
+    BOOKS {
+        int book_id PK
+        string isbn UK
+        string title
+        string author
+        string publisher
+        int publication_year
+        string genre
+        string language
+        int page_count
+        int available_copies
+        int total_copies
+        date date_added
+    }
+    
+    STAFF {
+        int staff_id PK
+        string first_name
+        string last_name
+        string email UK
+        string phone_number
+        string position
+        date hire_date
+        decimal salary
+    }
+    
+    CATEGORIES {
+        int category_id PK
+        string name UK
+        text description
+    }
+    
+    BOOK_CATEGORIES {
+        int book_id PK,FK
+        int category_id PK,FK
+    }
+    
+    LOANS {
+        int loan_id PK
+        int book_id FK
+        int member_id FK
+        int staff_id FK
+        date loan_date
+        date due_date
+        date return_date
+        enum status
+    }
+    
+    FINES {
+        int fine_id PK
+        int loan_id FK
+        decimal amount
+        date issue_date
+        date payment_date
+        enum status
+    }
+    
+    RESERVATIONS {
+        int reservation_id PK
+        int book_id FK
+        int member_id FK
+        date reservation_date
+        date expiry_date
+        enum status
+    }
+    
+    MEMBERS ||--o{ LOANS : borrows
+    BOOKS ||--o{ LOANS : is_borrowed_in
+    STAFF ||--o{ LOANS : processes
+    LOANS ||--o{ FINES : generates
+    MEMBERS ||--o{ RESERVATIONS : makes
+    BOOKS ||--o{ RESERVATIONS : is_reserved_in
+    BOOKS ||--o{ BOOK_CATEGORIES : has
+    CATEGORIES ||--o{ BOOK_CATEGORIES : categorizes
